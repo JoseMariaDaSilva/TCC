@@ -1,0 +1,108 @@
+
+
+
+QMainWindow { 
+    background-color: qlineargradient(x1:1 y1:0, x2:0 y2:1, stop:0 #e2f2e1, stop:1 #d2f2d0);
+    border: 1px solid black;
+}
+
+QMenuBar {
+    
+    background-color: #d2f2d0;
+}
+
+QGroupBox {
+    border-radius: 10px;
+    background-color:qlineargradient(x1:0 y1:0, x2:1 y2:1, stop:0 #e4ede4, stop:1 #d1e3d1);
+
+}
+/*=====================================Tab=====================================*/
+QWidget#tab1 {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    background-color:qlineargradient(x1:0 y1:0, x2:1 y2:1, stop:0 #e4ede4, stop:1 #d1e3d1);
+}
+
+QWidget#tab2 {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    background-color:qlineargradient(x1:0 y1:0, x2:1 y2:1, stop:0 #e4ede4, stop:1 #d1e3d1);
+}
+
+QWidget#tab3 {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    background-color:qlineargradient(x1:0 y1:0, x2:1 y2:1, stop:0 #e4ede4, stop:1 #d1e3d1);
+}
+
+QTabWidget::pane { 
+    
+    background: ;
+}
+
+
+
+QTabBar::tab:!selected{
+    background: #e4ede4;
+}
+QTabBar::tab:selected{
+    background: #d1e3d1;
+}
+/*===========================================================================*/
+
+
+QPushButton{
+    width:100px;
+    background-color:#524e4e;
+    color:#e4ede4;
+    padding: 1px;
+    border-style: solid;
+    border: 1px solid #524e4e;
+    border-radius: 7px;
+}
+
+QPushButton:hover:pressed
+{
+  background-color:#7f8a7f;
+}
+
+QLineEdit {
+    spacing: 0;
+    width: 50;
+    background: #c4bcbb;
+    padding: 1px;
+    border-style: solid;
+    border: 1px solid #c4bcbb;
+    border-radius: 7px;
+    
+}
+
+QTextEdit {
+    border: 0px;
+    background-color: #c4bcbb;
+    border-radius: 5px;
+}
+
+QPushButton#bt_play {
+    
+    background-color: green;
+    border-radius: 5px;        
+    border-width: 0px;
+}
+QPushButton#bt_play:hover:pressed
+{
+  background-color:#7f8a7f;
+}
+
+QPushButton#bt_stop {
+
+    background-color: red;
+    border-radius: 5px;        
+    border-width: 0px; 
+}
+
+QPushButton#bt_stop:hover:pressed
+{
+  background-color:#7f8a7f;
+}
+
