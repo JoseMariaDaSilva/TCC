@@ -2,7 +2,7 @@ from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 from matplotlib.animation import FuncAnimation
-from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtWidgets import QSizePolicy, QWidget, QHBoxLayout, QVBoxLayout, QPushButton
 import seaborn as sns
 
 sns.set_style("darkgrid")
@@ -32,10 +32,13 @@ class Plotting(FigureCanvas):
                                          QSizePolicy.Expanding
                                          )
 
-        
     def plot(self, x, y):
         self.ax.plot(x, y, c = "green", alpha = 0.1)
         self.ax.fill_between(x, y, color='green', alpha=0.1)
         self.draw()
+
+
+
+
 
 

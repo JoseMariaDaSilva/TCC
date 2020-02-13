@@ -8,8 +8,9 @@ class raspGp(QGroupBox):
     def __init__(self, parent = None):
         super(QGroupBox, self).__init__(parent)
 
-        self.setFixedSize(250,275)
+        self.setFixedSize(250,271)
         self.form = QFormLayout()
+        
         self.apply = QPushButton("aplicar")
         self.ping = QPushButton("ping")
 

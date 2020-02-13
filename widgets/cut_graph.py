@@ -21,6 +21,8 @@ class Cut(QGroupBox):
         self.stop = QLineEdit()
         self.stop.setValidator(QIntValidator())
 
+        
+
     
     def cut(self):
         self.hbox.addWidget(self.label1)

@@ -17,29 +17,10 @@ QGroupBox {
 
 }
 /*=====================================Tab=====================================*/
-QWidget#tab1 {
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    background-color:qlineargradient(x1:0 y1:0, x2:1 y2:1, stop:0 #e4ede4, stop:1 #d1e3d1);
-}
 
-QWidget#tab2 {
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    background-color:qlineargradient(x1:0 y1:0, x2:1 y2:1, stop:0 #e4ede4, stop:1 #d1e3d1);
+QWidget#tab1::pane {
+    border: 0px;
 }
-
-QWidget#tab3 {
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    background-color:qlineargradient(x1:0 y1:0, x2:1 y2:1, stop:0 #e4ede4, stop:1 #d1e3d1);
-}
-
-QTabWidget::pane { 
-    
-    background: ;
-}
-
 
 
 QTabBar::tab:!selected{
@@ -47,6 +28,10 @@ QTabBar::tab:!selected{
 }
 QTabBar::tab:selected{
     background: #d1e3d1;
+}
+
+QTabWidget::pane { 
+    background-color: #d1e3d1;
 }
 /*===========================================================================*/
 
@@ -61,9 +46,12 @@ QPushButton{
     border-radius: 7px;
 }
 
-QPushButton:hover:pressed
-{
+QPushButton:hover:pressed {
   background-color:#7f8a7f;
+}
+
+QPushButton#bt1:hover:pressed {
+  background-color:blue;
 }
 
 QLineEdit {
@@ -83,26 +71,53 @@ QTextEdit {
     border-radius: 5px;
 }
 
-QPushButton#bt_play {
+QPushButton#create {
     
-    background-color: green;
+    background-color:#524e4e;
+    color:#e4ede4;
     border-radius: 5px;        
     border-width: 0px;
 }
-QPushButton#bt_play:hover:pressed
+QPushButton#create:hover:pressed
 {
   background-color:#7f8a7f;
 }
 
-QPushButton#bt_stop {
-
-    background-color: red;
+QPushButton#search {
+    
+    background-color:#524e4e;
+    color:#e4ede4;
     border-radius: 5px;        
-    border-width: 0px; 
+    border-width: 0px;
 }
-
-QPushButton#bt_stop:hover:pressed
+QPushButton#search:hover:pressed
 {
   background-color:#7f8a7f;
 }
+
+/*================================TabletView_&List=============================================*/
+QHeaderView::section {
+    background-color: #524e4e;
+    border: none;
+    height: 32px;
+    color: #c4bcbb;
+}
+
+
+QTableWidget {
+    background-color: ;
+    border: 0px;
+}
+
+QListView{
+    background-color:#c4bcbb;
+}
+
+
+
+QTableWidget#tab1::pane {
+    background: #c4bcbb;
+}
+/*==================================end=============================================*/
+
 
