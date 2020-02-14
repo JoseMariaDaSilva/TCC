@@ -10,13 +10,15 @@ class Tablet(QTableWidget):
     def __init__(self, parent=None):
         super(QTableWidget, self).__init__(parent)
         self.headers = "id,motor_tag,potencia,fator_potencia,rotação,rendimento,n_ensaios,data".split(',')
+        self.setFixedSize(400,475)
         self.resizeColumnsToContents()
         self.resizeRowsToContents()
-        self.setRowCount(50)
+        self.setRowCount(10)
         self.setColumnCount(len(self.headers))
         self.setHorizontalHeaderLabels(self.headers)
         self.setObjectName('tablet1')
         self.setStyleSheet("background:#c4bcbb")
+        self.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         
         
         self.keys = ["show_"+str(x) for x in range(10)]
@@ -35,9 +37,10 @@ class Tablet(QTableWidget):
 
         motor_labels = ["Motor_"+str(x) for x in range(10)]
 
-        for row,item in enumerate(motor_labels):
+        for row, item in enumerate(motor_labels):
             tabletItem = QTableWidgetItem(item)
-            tabletItem.setTextAlignment(Qt.AlignCenter)
+            tabletItem.setFlags(tabletItem.flags()|Qt.ItemIsUserCheckable)
+            tabletItem.setCheckState(Qt.Unchecked)
             self.setItem(row,1,QTableWidgetItem(tabletItem))
 
     def handleButtonClicked(self):

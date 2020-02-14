@@ -32,9 +32,15 @@ class Plotting(FigureCanvas):
                                          QSizePolicy.Expanding
                                          )
 
-    def plot(self, x, y):
-        self.ax.plot(x, y, c = "green", alpha = 0.1)
-        self.ax.fill_between(x, y, color='green', alpha=0.1)
+    def plot(self, x, y, title=""):
+        self.ax.set_title(title)
+        self.ax.plot(x, y, alpha = 0.1)
+        self.ax.fill_between(x, y, alpha=0.1)
+        self.draw()
+
+    def plot_scatt(self,x ,y, title=""):
+        self.ax.set_title(title)
+        self.ax.scatter(x, y)
         self.draw()
 
 

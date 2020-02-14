@@ -27,7 +27,7 @@ class MyWidget(QWidget):
         
         hbox.addLayout(vbox1)
 
-        hbox.addWidget(Output())
+        hbox.addWidget(Output(self))
 
         self.setLayout(hbox)
 
