@@ -8,7 +8,7 @@ class MainWindow(QMainWindow):
     def __init__(self, parent = None):
         super(QMainWindow, self).__init__(parent)
         
-        self.setMinimumSize(1200, 600)
+        self.setFixedSize(1200, 600)
         self.setWindowTitle("tcc")
 
         self.menubar = self.menuBar()

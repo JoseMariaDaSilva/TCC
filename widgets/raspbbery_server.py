@@ -2,6 +2,9 @@ from PyQt5.QtWidgets import (QGroupBox, QHBoxLayout, QFormLayout, QPushButton, Q
                              QVBoxLayout, QTextEdit)
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
+import requests
+import json
+
 
 
 class raspGp(QGroupBox):
@@ -13,8 +16,9 @@ class raspGp(QGroupBox):
         
         self.apply = QPushButton("aplicar")
         self.ping = QPushButton("ping")
+        self.ping.clicked.connect(self.ping_)
 
-        self.addres = QLineEdit("192.168.5.1")
+        self.addres = QLineEdit("http://127.0.0.1:5000/")
         self.addres.setReadOnly(True)
         
 
@@ -39,9 +43,22 @@ class raspGp(QGroupBox):
         self.vbox.addLayout(self.form)
         self.vbox.addWidget(self.textOutput)
         self.setLayout(self.vbox)
-        
         return self
 
-        
+
+    def ping_(self):
+        try:
+            data = dict(requests.get("http://127.0.0.1:5000/test").json())
+            
+        except:
+            self.textOutput.append("server: off")
+            self.textOutput.append("error request!.")
+            self.textOutput.append("=========================")
+            
+        else:
+            for item in data.values():
+                self.textOutput.append(item)
+            self.textOutput.append("=========================")
+
 
     

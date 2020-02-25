@@ -17,11 +17,12 @@ class Plotting(FigureCanvas):
         self.ax = self.fig.add_subplot(111)
         self.ax.spines["right"].set_visible(False)
         self.ax.spines["top"].set_visible(False)
-        self.ax.spines["left"].set_visible(True)
-        self.ax.spines["bottom"].set_visible(True)
+        self.ax.spines["left"].set_visible(False)
+        self.ax.spines["bottom"].set_visible(False)
         
-        self.ax.grid(color='green', linestyle='-', linewidth=0.1, axis='x', alpha=0.2)
-        self.ax.grid(color='green', linestyle='-', linewidth=0.1, axis='y', alpha=0.2)
+        self.ax.grid(color='white', linestyle='-', linewidth=0.1, axis='x', alpha=0.2)
+        self.ax.grid(color='white', linestyle='-', linewidth=0.1, axis='y', alpha=0.2)
+        self.ax.tick_params(axis='x', color = 'white')
         self.ax.patch.set_visible(False)
         
         

@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QGroupBox, QVBoxLayout, QGridLayout, QLabel, QLineEdit, QHBoxLayout
+from PyQt5.QtWidgets import QWidget, QGroupBox, QVBoxLayout, QGridLayout, QLabel, QLineEdit, QHBoxLayout, QMessageBox
 from PyQt5.QtGui import QIntValidator
 from PyQt5.QtCore import Qt
 from .raspbbery_server import raspGp
@@ -19,9 +19,10 @@ class MyWidget(QWidget):
         vbox1 = QVBoxLayout()
         
         hbox = QHBoxLayout()
-        
+        run = Run()
+        run.message.connect(self.show_message)
         vbox1.addWidget(raspGp(self).rasp())
-        vbox1.addWidget(Run())
+        vbox1.addWidget(run)
         vbox1.setContentsMargins(0,0,0,0)
         vbox1.setSpacing(0)
         
@@ -30,6 +31,10 @@ class MyWidget(QWidget):
         hbox.addWidget(Output(self))
 
         self.setLayout(hbox)
+
+    def show_message(self, message):
+        QMessageBox().about(self, "Alerta!",message)
+
 
 
 
