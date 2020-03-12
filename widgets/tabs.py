@@ -3,25 +3,24 @@ from PyQt5.QtWidgets import (
                              QLabel, QGroupBox, QComboBox, QLineEdit, QFormLayout, QTextEdit, QMessageBox
                              )
 
-from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtCore import Qt, QTimer, pyqtSignal
 from PyQt5.QtGui import QIcon
+from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from .table import TableWidget
 from .plot import Plotting
-from .run import Run
+import requests
 import numpy as np
 import random
 
 
 
 class Tabs(QTabWidget):
-
+    name_signal = pyqtSignal(str)
     def __init__(self, parent = None):
         super(QTabWidget, self).__init__(parent)
         self.setTabsClosable(True)
         self.icon = QIcon("C:/Users/ZZZZZZ/Desktop/projeto_dashboardApp/src/icons/motor.png")
         self.tabCloseRequested.connect(self.closeTab)
-
-        self.setMovable(True)
         self.setElideMode(Qt.ElideRight)
         self.setUpdatesEnabled(True)
         self.tab1 = TableWidget(self)
@@ -29,6 +28,7 @@ class Tabs(QTabWidget):
         self.addTab(self.tab1, 'histórico')
         self.setObjectName('tab1')
         self.tab_alternative = self
+        
     
     def closeTab(self, index):
         
@@ -41,36 +41,43 @@ class Tabs(QTabWidget):
     def addTabs(self, name):
         
         for count_tab in range(self.count()):
+            print(count_tab,'oi')
             if self.tabText(count_tab) == name:
                 break
         else:
-            self.addTab(options(), str(name))
+            
+            self.addTab(options(name), str(name))
 
 
 
-
-
-
-        
 
 class options(QWidget):
-    def __init__(self, parent = None):
+    
+    def __init__(self, name, parent = None):
+        self.name = name
         super(QWidget, self).__init__(parent)
         self.setStyleSheet("background-color:qlineargradient(x1:0 y1:0, x2:1 y2:1, stop:0 #59595e, stop:1 #0b0b0d);")
+    
         self.vbox = QVBoxLayout()
         self.vbox2 = QVBoxLayout()
         self.hbox = QHBoxLayout()
         self.real = Plotting(self)
         self.rms = Plotting(self)
-        #self.new_plot = Plotting(self)
+        self.tabb = Tabs()
+        self.nav = NavigationToolbar(self.rms, self.tabb, coordinates=False)
+        self.nav2 = NavigationToolbar(self.real, self.tabb, coordinates=False)
+        
         self.vbox.addWidget(self.real)
+        self.vbox.addWidget(self.nav2)
         self.vbox.addWidget(self.rms)
+        self.vbox.addWidget(self.nav)
         #self.hbox.addWidget(self.new_plot)
         self.hbox.addLayout(self.vbox)
         self.vbox2.addWidget(self.config())
         self.vbox2.addWidget(self.cnn())
         self.hbox.addLayout(self.vbox2)
         self.setLayout(self.hbox)
+        
 
         
 
@@ -85,7 +92,7 @@ class options(QWidget):
         
 
     def config(self):
-        gp1 = QGroupBox()
+        gp1 = QGroupBox(self)
         gp1.setFixedSize(250,237)
         self.configV = QVBoxLayout(self)
         self.configV.setAlignment(Qt.AlignHCenter)
@@ -94,6 +101,7 @@ class options(QWidget):
         
 
         self.iniciar = QPushButton('iniciar')
+        self.iniciar.clicked.connect(self.start)
         self.iniciar.setStyleSheet(""" QPushButton{
                                             width:110px;
                                             background-color:#524e4e;
@@ -108,9 +116,9 @@ class options(QWidget):
                                             background-color:#7f8a7f;
                                             }
                                         """)
-        self.iniciar.clicked.connect(self.finish_require)
 
         self.parar = QPushButton('parar')
+        self.parar.clicked.connect(self.stop)
         self.parar.setStyleSheet(""" QPushButton{
                                             width:100px;
                                             background-color:#524e4e;
@@ -180,21 +188,24 @@ class options(QWidget):
         return gp1
 
     def cnn(self):
-        gp1 = QGroupBox()
-        
+        gp1 = QGroupBox(self)
         gp1.setFixedSize(250,237)
         return gp1
 
+    def start(self):
+        print(self.name)
+        data = requests.get("http://192.168.15.86/capture/on").json()['message']
+        self.log.append(data)
+
+    def stop(self):
+        data = requests.get("http://192.168.15.86/capture/off").json()['message']
+        print(data)
+        print(type(data))
+
+
+
+
     
-    def finish_require(self):
-        msg_ok = QMessageBox()
-        
-        msg_ok.question(options(self), "Test?", "Deseja salvar?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-    
-        if msg_ok == QMessageBox.Yes:
-            print('Yes clicked.')
-        else:
-            print('No clicked.')
 
 
 

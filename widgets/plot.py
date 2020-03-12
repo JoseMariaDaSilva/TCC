@@ -22,11 +22,10 @@ class Plotting(FigureCanvas):
         
         self.ax.grid(color='white', linestyle='-', linewidth=0.1, axis='x', alpha=0.2)
         self.ax.grid(color='white', linestyle='-', linewidth=0.1, axis='y', alpha=0.2)
-        self.ax.tick_params(axis='x', color = 'white')
+        
         self.ax.patch.set_visible(False)
         
         
-
         FigureCanvas.__init__(self, self.fig)
         self.setParent(parent)
         FigureCanvas.setSizePolicy(self, QSizePolicy.Expanding,
@@ -36,7 +35,9 @@ class Plotting(FigureCanvas):
     def plot(self, x, y, title=""):
         self.ax.set_title(title)
         self.ax.plot(x, y, alpha = 0.1)
-        self.ax.fill_between(x, y, alpha=0.1)
+        self.ax.fill_between(x, y, alpha=0.5)
+        self.ax.tick_params(axis='x', colors='white')
+        self.ax.tick_params(axis='y', colors='white')
         self.draw()
 
     def plot_scatt(self,x ,y, title=""):

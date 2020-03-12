@@ -9,7 +9,6 @@ from PyQt5.QtCore import (Qt, pyqtSignal, QSortFilterProxyModel, QModelIndex,
                          QTimer
                             )
 from PyQt5.QtGui import QStandardItemModel, QStandardItem, QIcon
-from PyQt5.QtSql import QSqlQueryModel, QSqlDatabase, QSqlQuery, QSqlTableModel, QSqlDriver
 import requests
 from .run import Run
 import operator
@@ -44,7 +43,7 @@ class TableModel(QAbstractTableModel):
     def setData(self, index, value, role=Qt.DisplayRole):
         result = index.sibling(index.row(),1).data()
         self.tabSignal.emit(result)
-        print("setData", index.row(),1, result)
+        #print("setData", index.row(),1, result)
 
     def headerData(self, col, orientation, role):
         if orientation == Qt.Horizontal and role == Qt.DisplayRole:
@@ -84,7 +83,7 @@ class TableWidget(QWidget):
     def __init__(self, parent=None):
         super(QWidget, self).__init__(parent)
         try:
-            self.data = requests.get("http://127.0.0.1:5000/list").json()['motors']
+            self.data = requests.get("http://192.168.15.86/list", timeout=2).json()['motors']
 
         except:
             self.data = [["-" for _ in range(8)]]
@@ -105,17 +104,14 @@ class TableWidget(QWidget):
             self.vbox.addWidget(self.tv)
             self.setLayout(self.vbox)
 
-            timer = QTimer(self)
-            timer.timeout.connect(self.show_data)
-            timer.start(10000)
         
     def show_data(self):
         try:
-            self.tm.changeData(requests.get("http://127.0.0.1:5000/list").json()['motors'])
-
+            
+            self.tm.changeData(new_data)
             self.tv = TableView()
             self.tv.setModel(self.tm)
-            
+            print('to funcionando!')
         except:
             pass
 

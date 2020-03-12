@@ -1,0 +1,20 @@
+[0;1;32m●[0m uwsgi.service - uWSGI Service
+   Loaded: loaded (/etc/systemd/system/uwsgi.service; disabled; vendor preset: enabled)
+   Active: [0;1;32mactive (running)[0m since Sun 2020-03-08 16:12:54 -03; 45s ago
+ Main PID: 2906 (uwsgi)
+    Tasks: 3 (limit: 2200)
+   Memory: 33.3M
+   CGroup: /system.slice/uwsgi.service
+           ├─2906 /usr/local/bin/uwsgi --ini /home/pi/server_tcc/uwsgi.ini
+           └─2911 /usr/local/bin/uwsgi --ini /home/pi/server_tcc/uwsgi.ini
+
+mar 08 16:12:54 raspberrypizZZZZ uwsgi[2906]: Python main interpreter initialized at 0x14e9ea8
+mar 08 16:12:54 raspberrypizZZZZ uwsgi[2906]: python threads support enabled
+mar 08 16:12:54 raspberrypizZZZZ uwsgi[2906]: your server socket listen backlog is limited to 100 connections
+mar 08 16:12:54 raspberrypizZZZZ uwsgi[2906]: your mercy for graceful operations on workers is 60 seconds
+mar 08 16:12:54 raspberrypizZZZZ uwsgi[2906]: mapped 143936 bytes (140 KB) for 2 cores
+mar 08 16:12:54 raspberrypizZZZZ uwsgi[2906]: *** Operational MODE: threaded ***
+mar 08 16:12:56 raspberrypizZZZZ uwsgi[2906]: WSGI app 0 (mountpoint='') ready in 2 seconds on interpreter 0x14e9ea8 pid: 2906 (default app)
+mar 08 16:12:56 raspberrypizZZZZ uwsgi[2906]: *** uWSGI is running in multiple interpreter mode ***
+mar 08 16:12:56 raspberrypizZZZZ uwsgi[2906]: spawned uWSGI master process (pid: 2906)
+mar 08 16:12:56 raspberrypizZZZZ uwsgi[2906]: spawned uWSGI worker 1 (pid: 2911, cores: 2)

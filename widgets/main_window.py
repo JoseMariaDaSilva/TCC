@@ -3,6 +3,7 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
 from .widgets import MyWidget
 
+
 class MainWindow(QMainWindow):
 
     def __init__(self, parent = None):
@@ -33,22 +34,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(wid)
         self.new_window = list()
 
-    def tuto(self):
-        window = SecondWindow()
-        self.new_window.append(window)
 
-        window.show()
-
-class SecondWindow(QMainWindow):
-    def __init__(self, parent = None):
-        super(QMainWindow, self).__init__(parent)
-
-        self.icon = QPixmap("C:/Users/ZZZZZZ/Desktop/projeto_dashboardApp/src/icons/tuto_test.png")
-        self.label = QLabel()
-        self.label.setPixmap(self.icon)
-        self.vbox = QVBoxLayout(self)
-        self.vbox.addWidget(self.label)
-        self.setLayout(self.vbox)
 
     
 

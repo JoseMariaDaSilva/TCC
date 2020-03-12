@@ -21,7 +21,7 @@ class MyWidget(QWidget):
         hbox = QHBoxLayout()
         run = Run()
         run.message.connect(self.show_message)
-        vbox1.addWidget(raspGp(self).rasp())
+        #vbox1.addWidget(raspGp(self).rasp())
         vbox1.addWidget(run)
         vbox1.setContentsMargins(0,0,0,0)
         vbox1.setSpacing(0)

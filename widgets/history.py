@@ -112,7 +112,7 @@ class Delegate(QStyledItemDelegate):
 
     def paint(self, painter, option, index):
         if isinstance(self.parent(), QAbstractItemView):
-            self.parent().openPersistentEditor(index, 0)
+            self.parent().openPersistentEditor(index, 1)
         QStyledItemDelegate.paint(self, painter, option, index)
 
 

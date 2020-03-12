@@ -1,11 +1,14 @@
 from PyQt5.QtWidgets import QGroupBox, QHBoxLayout, QFormLayout, QWidget, QVBoxLayout, QSpinBox, QPushButton, QLabel, QLineEdit, QTabWidget, QMessageBox
 from PyQt5.QtGui import QPixmap, QIntValidator, QDoubleValidator, QIcon
-from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtCore import Qt, pyqtSignal, QThread
 from .plot import Plotting
 from tools.tests_ea_tag import make_dir_a_tag
+from .raspbbery_server import raspGp
+import paho.mqtt.client as mqtt
 import requests
 import json
 import datetime
+from ast import literal_eval
 
 
 
@@ -21,9 +24,9 @@ class Run(QGroupBox):
 
     def __init__(self, parent = None):
         super(QGroupBox, self).__init__(parent)
-        self.setFixedSize(250,271)
 
         
+        #self.setFixedSize(250,271)
         self.vbox = QVBoxLayout(self)
         self.form = QFormLayout(self)
         
@@ -47,7 +50,7 @@ class Run(QGroupBox):
         self.rendimento.setValidator(QDoubleValidator(0,1,2))
 
         self.create = QPushButton("criar")
-        self.create.clicked.connect(self.post)
+        self.create.clicked.connect(self.register)
         self.create.setObjectName("create")
         
         self.search = QPushButton("procurar")
@@ -63,12 +66,10 @@ class Run(QGroupBox):
         self.form.addRow(self.create, self.search)
         self.vbox.addLayout(self.form)
         self.setLayout(self.vbox)
-        
-        
+      
     
-    def post(self):
+    def register(self, mark):
         time_now = datetime.datetime.now().strftime("%d/%m/%y-%H:%M:%S")
-        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
         self.data = {
                         "tag":str(self.motor_label.text()),
                         "potencia":int(self.pot.text()),
@@ -79,18 +80,32 @@ class Run(QGroupBox):
                         "ensaios":0
                     }
         
+        
         try:
-            result=requests.post("http://127.0.0.1:5000/register", data=json.dumps(self.data), headers=headers)
-            make_dir_a_tag(self.data['tag']) 
             
+            result = make_dir_a_tag(self.data['tag'])
+
+            if result[1]:
+                mqttc = mqtt.Client()
+                mqttc.connect('mqtt.eclipse.org', 1883)
+                mqttc.publish('zezinho', str(self.data))
+            
+
         except:
-            self.message.emit("Servidor se encontrola offline")
+            self.message.emit(result[0])
 
         else:
-            if result.status_code == 400:
-                self.message.emit(str(result.json()['message']))
-            else:
-                self.dataSignal.emit(True)
+            self.message.emit(result[0])
+            
+            self.dataSignal.emit(True)
+        
+        
+     
+
+            
+
+        
+            
             
 
         

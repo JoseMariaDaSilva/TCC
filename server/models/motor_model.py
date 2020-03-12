@@ -1,4 +1,5 @@
 import sqlite3
+import os
 
 class MotorModel:
 
@@ -14,6 +15,7 @@ class MotorModel:
 
     @classmethod
     def find_by_tag(cls, tag):
+        print(os.path.abspath(__file__))
         connection = sqlite3.connect("motor.db")
         cursor = connection.cursor()
 
@@ -42,3 +44,14 @@ class MotorModel:
         
         connection.close()
         return motor
+
+    
+    def delete_from_db(self):
+        connection = sqlite3.connect('motor.db')
+        cursor = connection.cursor()
+        query = "DELETE FROM motor WHERE tag=?"
+        cursor.execute(query,(self.tag,))
+        connection.commit()
+        connection.close()
+
+        
