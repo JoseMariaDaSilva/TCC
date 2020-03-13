@@ -109,9 +109,6 @@ QPushButton#search {
     border-width: 0px;
 }
 
-QLabel#status {
-    color: green;
-}
 
 QLabel#result {
     color: red;

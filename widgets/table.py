@@ -6,11 +6,13 @@ from PyQt5.QtWidgets import (
 
 from PyQt5.QtCore import (Qt, pyqtSignal, QSortFilterProxyModel, QModelIndex,
                          QPersistentModelIndex, QSize, QRegExp, pyqtSlot, QAbstractTableModel, QVariant, pyqtSignal, pyqtSlot, QObject,
-                         QTimer
+                         QTimer, QThread
                             )
 from PyQt5.QtGui import QStandardItemModel, QStandardItem, QIcon
 import requests
 from .run import Run
+import paho.mqtt.client as mqtt
+from ast import literal_eval
 import operator
 
 
@@ -21,9 +23,9 @@ import operator
 class TableModel(QAbstractTableModel):
     
     tabSignal = pyqtSignal(str)
-    def __init__(self, data):
+    def __init__(self):
         super(TableModel, self).__init__()
-        self._data = data
+        self._data = [['?' for _ in range(8)]]
 
         self.header = "id,tag,potencia,fp,rotacao,rendimento,data,ensaios".split(',')
     
@@ -82,36 +84,27 @@ class TableView(QTableView):
 class TableWidget(QWidget):
     def __init__(self, parent=None):
         super(QWidget, self).__init__(parent)
-        try:
-            self.data = requests.get("http://192.168.15.86/list", timeout=2).json()['motors']
-
-        except:
-            self.data = [["-" for _ in range(8)]]
-
-        finally:
-            
-            self.tm = TableModel(self.data)
-            self.tv = TableView(self)
-            #self.refresh = QPushButton('refresh')
-            #self.refresh.clicked.connect(self.show_data)
-            
-            self.tv.setItemDelegateForColumn(0,ButtonDelegate(self))
-            self.tv.setModel(self.tm)
-            self.tv.setSortingEnabled(True)
-            self.hbox = QHBoxLayout()
-            self.vbox = QVBoxLayout()
-            #self.vbox.addWidget(self.refresh)
-            self.vbox.addWidget(self.tv)
-            self.setLayout(self.vbox)
-
+ 
         
-    def show_data(self):
+        self.tm = TableModel()
+        self.tv = TableView(self)    
+        self.tv.setItemDelegateForColumn(0,ButtonDelegate(self))
+        self.tv.setModel(self.tm)
+        self.tv.setSortingEnabled(True)
+        self.hbox = QHBoxLayout()
+        self.vbox = QVBoxLayout()
+        self.vbox.addWidget(self.tv)
+        self.setLayout(self.vbox)
+        att = Att_table('mqtt.eclipse.org', 1883, 'zezin3', parent=self)
+        att.start()
+        att.data_signal.connect(self.show_data)
+
+    def show_data(self,data):
         try:
-            
-            self.tm.changeData(new_data)
+            self.tm.changeData(data)
             self.tv = TableView()
             self.tv.setModel(self.tm)
-            print('to funcionando!')
+            
         except:
             pass
 
@@ -143,6 +136,35 @@ class ButtonDelegate(QItemDelegate):
     @pyqtSlot()
     def currentIndexChanged(self):
         self.commitData.emit(self.sender())
+
+class Att_table(QThread):
+    data_signal = pyqtSignal(list)
+    def __init__(self, broker, port, topic, parent=None):
+        super(Att_table, self).__init__(parent)
+        self.tm = TableModel()
+        self.broker = broker
+        self.port = port
+        self.topic = topic
+        print("[STATUS] Inicializando MQTT...")
+        #inicializa MQTT:
+        self.client = mqtt.Client('10')
+        self.client.on_connect = self.on_connect
+        self.client.on_message = self.on_message
+        self.client.connect(self.broker, self.port)
+
+
+    def on_connect(self, client, userdata, flags, rc):
+        print("[STATUS] Conectado ao Broker. Resultado de conexao: "+str(rc))
+
+        client.subscribe(self.topic)
+ 
+    
+    def on_message(self, client, userdata, msg):
+        
+        self.data_signal.emit(literal_eval((msg.payload).decode('utf-8')))
+        
+    def run(self):
+        self.client.loop_forever()
 
 
 

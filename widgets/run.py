@@ -17,6 +17,7 @@ from ast import literal_eval
 
 
 
+
 class Run(QGroupBox):
 
     message = pyqtSignal(str)
@@ -32,6 +33,7 @@ class Run(QGroupBox):
         
         self.icon = QPixmap("C:/Users/ZZZZZZ/Desktop/projeto_dashboardApp/src/icons/motor.png")
         self.lbl = QLabel()
+        
         self.lbl.setPixmap(self.icon)
 
         self.motor_label = QLineEdit(self)
@@ -57,6 +59,7 @@ class Run(QGroupBox):
         self.search.setObjectName("search")
 
         self.vbox.setSpacing(5)
+        
         self.vbox.addWidget(self.lbl, alignment=Qt.AlignCenter)
         self.form.addRow("tag:", self.motor_label)
         self.form.addRow("potencia (HP):", self.pot)
@@ -65,7 +68,9 @@ class Run(QGroupBox):
         self.form.addRow("rendimento:",self.rendimento)
         self.form.addRow(self.create, self.search)
         self.vbox.addLayout(self.form)
+        self.vbox.addStretch()
         self.setLayout(self.vbox)
+        
       
     
     def register(self, mark):
@@ -86,9 +91,9 @@ class Run(QGroupBox):
             result = make_dir_a_tag(self.data['tag'])
 
             if result[1]:
-                mqttc = mqtt.Client()
+                mqttc = mqtt.Client('3')
                 mqttc.connect('mqtt.eclipse.org', 1883)
-                mqttc.publish('zezinho', str(self.data))
+                mqttc.publish('joelho1', str(self.data))
             
 
         except:

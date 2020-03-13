@@ -2,9 +2,11 @@ from PyQt5.QtWidgets import QLabel, QDialog, QPushButton, QLineEdit, QLabel, QFo
 from PyQt5.QtGui import QIcon, QPixmap, QPalette
 from PyQt5.QtCore import Qt, QThread, pyqtSignal
 from .main_window import MainWindow
+from .table import TableModel, TableView
 import paho.mqtt.client as mqtt
 import requests
-from time import sleep
+from ast import literal_eval
+
 class My_entry(QDialog):
     
     def __init__(self, parent=None):
@@ -47,30 +49,25 @@ class My_entry(QDialog):
         self.setLayout(self.vbox)
         
         self.flag = 0
-        self.palet = QPalette()
+        
 
         
 
     def mainwindow(self):
 
         self.wind = MainWindow()
-        mm = My_client_register(self.addres.currentText(),1883,'zezin')
-
+        mm = My_client_register(self.addres.currentText(),1883,'zezin2')
+        
         try:
             requests.get("https://"+self.addres.currentText())
-            self.result.setText('Online')
-            sleep(2)
+            
         except:
-            self.result.setText("Offline")
+            self.result.setText("Offline.")
             
         else:
             mm.start()
             self.wind.show()
             self.close()
-    
-    def on_connect(self, client, userdata, flags, rc):
-        pass
-
 
     def add_addres_(self):
         self.addres.addItem(QIcon("C:/Users/ZZZZZZ/Desktop/projeto_dashboardApp/src/icons/net_icon.png"),self.add_addres.text())
@@ -93,12 +90,13 @@ class My_client_register(QThread):
  
     
     def on_message(self, client, userdata, msg):
-        print("[MSG RECEBIDA] Topico: "+msg.topic+" / Mensagem: "+str(msg.payload))
+        pass
+        
 
     def run(self):
         print("[STATUS] Inicializando MQTT...")
         #inicializa MQTT:
-        client = mqtt.Client()
+        client = mqtt.Client('1')
         client.on_connect = self.on_connect
         client.on_message = self.on_message
         try:

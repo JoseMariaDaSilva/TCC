@@ -54,7 +54,7 @@ class raspGp(QGroupBox):
     def ping_(self):
 
         try:
-            mm = My_client_register(self.addres.text(), 1883, 'zezinho', parent=self)
+            mm = My_client_register(self.addres.text(), 1883, 'zezin', parent=self)
             mm.start()
             self.mark_signal.emit(True)
             self.textOutput.append("[STATUS] Inicializando MQTT...")
@@ -78,14 +78,17 @@ class My_client_register(QThread):
         print("[STATUS] Conectado ao Broker. Resultado de conexao: "+str(rc))
 
         client.subscribe(self.topic)
+        
  
     
     def on_message(self, client, userdata, msg):
         print("[MSG RECEBIDA] Topico: "+msg.topic+" / Mensagem: "+str(msg.payload))
 
+    
+
     def run(self):
         print("[STATUS] Inicializando MQTT...")
-        #inicializa MQTT:
+        
         client = mqtt.Client()
         client.on_connect = self.on_connect
         client.on_message = self.on_message
