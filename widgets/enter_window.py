@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QLabel, QDialog, QPushButton, QLineEdit, QLabel, QFormLayout, QVBoxLayout, QHBoxLayout, QComboBox, QStatusBar
-from PyQt5.QtGui import QIcon, QPixmap, QPalette
+from PyQt5.QtGui import QIcon, QPixmap, QPalette, QFont
 from PyQt5.QtCore import Qt, QThread, pyqtSignal
 from .main_window import MainWindow
 from .table import TableModel, TableView
@@ -8,7 +8,7 @@ import requests
 from ast import literal_eval
 
 class My_entry(QDialog):
-    
+    addres_signal = pyqtSignal(str)
     def __init__(self, parent=None):
         super(My_entry, self).__init__(parent)
         self.setFixedSize(400,250)
@@ -16,10 +16,10 @@ class My_entry(QDialog):
         self.setWindowTitle('Home')
         my_icon = QIcon("C:/Users/ZZZZZZ/Desktop/projeto_dashboardApp/src/icons/rsp2.png")
         my_pix = QPixmap("C:/Users/ZZZZZZ/Desktop/projeto_dashboardApp/src/icons/rsp2.png")
-        
-        self.setToolTip('oi')
+        self.name_ = QLabel('PypiMotor')
+        self.name_.setFont(QFont('Arial',30))
         self.setWindowIcon(my_icon)
-        self.large_ICON = QLabel("PyPiMotor")
+        self.large_ICON = QLabel()
         self.large_ICON.setPixmap(my_pix)
         self.vbox = QVBoxLayout()
         self.hbox = QHBoxLayout()
@@ -36,6 +36,7 @@ class My_entry(QDialog):
         self.result.setObjectName('result')
         self.connection.clicked.connect(self.mainwindow)
         self.vbox.addWidget(self.large_ICON, alignment=Qt.AlignHCenter)
+        self.vbox.addWidget(self.name_, alignment=Qt.AlignHCenter)
         self.vbox.addStretch()
         self.vbox.addLayout(self.hbox2)
         self.vbox.addLayout(self.hbox)
@@ -65,6 +66,7 @@ class My_entry(QDialog):
             self.result.setText("Offline.")
             
         else:
+            self.addres_signal.emit(self.addres.currentText())
             mm.start()
             self.wind.show()
             self.close()

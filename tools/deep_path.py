@@ -6,4 +6,5 @@ def deep_folder_location(level, path, revere=False):
     deep = current_path.split("\\")[:-level:]
     return os.path.join('\\'.join(deep), path)
 
-print(deep_folder_location(1, 'motores_registrados'))
+x = deep_folder_location(1, 'motores_registrados')
+print(os.listdir(x))

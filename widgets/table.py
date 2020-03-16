@@ -84,8 +84,6 @@ class TableView(QTableView):
 class TableWidget(QWidget):
     def __init__(self, parent=None):
         super(QWidget, self).__init__(parent)
- 
-        
         self.tm = TableModel()
         self.tv = TableView(self)    
         self.tv.setItemDelegateForColumn(0,ButtonDelegate(self))
@@ -107,6 +105,7 @@ class TableWidget(QWidget):
             
         except:
             pass
+
 
 
 
@@ -136,6 +135,7 @@ class ButtonDelegate(QItemDelegate):
     @pyqtSlot()
     def currentIndexChanged(self):
         self.commitData.emit(self.sender())
+        
 
 class Att_table(QThread):
     data_signal = pyqtSignal(list)
@@ -154,8 +154,7 @@ class Att_table(QThread):
 
 
     def on_connect(self, client, userdata, flags, rc):
-        print("[STATUS] Conectado ao Broker. Resultado de conexao: "+str(rc))
-
+        pass
         client.subscribe(self.topic)
  
     

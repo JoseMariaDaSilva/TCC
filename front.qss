@@ -22,6 +22,7 @@ QGroupBox {
 
 QLabel {
     color: white;
+    background-color: 0;
 }
 /*=====================================Tab=====================================*/
 
@@ -29,9 +30,7 @@ QWidget#tab1::pane {
     border: 0px;
 }
 
-QWidget#options {
-    background-color:qlineargradient(x1:0 y1:0, x2:1 y2:1, stop:0 #e4ede4, stop:1 #d1e3d1);
-}
+
 
 QTabBar::tab:!selected{
     background: #6d6d73;
@@ -134,7 +133,7 @@ QMessageBox::question {
 }
 
 QMessageBox QLabel {
-    color: rgb(200, 200, 200);
+    background-color:0;
 }
 
 /*================================TabletView_&List=============================================*/

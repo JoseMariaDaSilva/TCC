@@ -3,7 +3,6 @@ from PyQt5.QtGui import QPixmap, QIntValidator, QDoubleValidator, QIcon
 from PyQt5.QtCore import Qt, pyqtSignal, QThread
 from .plot import Plotting
 from tools.tests_ea_tag import make_dir_a_tag
-from .raspbbery_server import raspGp
 import paho.mqtt.client as mqtt
 import requests
 import json
@@ -70,6 +69,7 @@ class Run(QGroupBox):
         self.vbox.addLayout(self.form)
         self.vbox.addStretch()
         self.setLayout(self.vbox)
+        
         
       
     

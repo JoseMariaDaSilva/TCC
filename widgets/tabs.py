@@ -8,6 +8,7 @@ from PyQt5.QtGui import QIcon
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from .table import TableWidget
 from .plot import Plotting
+import paho.mqtt.client as mqtt
 import requests
 import numpy as np
 import random
@@ -16,6 +17,7 @@ import random
 
 class Tabs(QTabWidget):
     name_signal = pyqtSignal(str)
+    index_signal = pyqtSignal(int)
     def __init__(self, parent = None):
         super(QTabWidget, self).__init__(parent)
         self.setTabsClosable(True)
@@ -35,6 +37,7 @@ class Tabs(QTabWidget):
         if self.tabText(index) == "histórico":
             pass
         else:
+            self.index_signal.emit(index)
             self.widget(index)
             self.removeTab(index)
 
@@ -45,7 +48,6 @@ class Tabs(QTabWidget):
             if self.tabText(count_tab) == name:
                 break
         else:
-            
             self.addTab(options(name), str(name))
 
 
@@ -64,6 +66,7 @@ class options(QWidget):
         self.real = Plotting(self)
         self.rms = Plotting(self)
         self.tabb = Tabs()
+        self.tabb.index_signal.connect(self.delete_from_table_func)
         self.nav = NavigationToolbar(self.rms, self.tabb, coordinates=False)
         self.nav2 = NavigationToolbar(self.real, self.tabb, coordinates=False)
         
@@ -98,7 +101,10 @@ class options(QWidget):
         self.configV.setAlignment(Qt.AlignHCenter)
         self.cnnV = QVBoxLayout(self)
         self.form = QFormLayout(self)
-        
+        self.trash = QIcon("C:/Users/ZZZZZZ/Desktop/projeto_dashboardApp/src/icons/trash_icon.png")
+        self.delete_from_table = QPushButton(self.trash, "remover")
+        self.delete_from_table.clicked.connect(self.delete_from_table_func)
+        self.delete_from_table.setStyleSheet('QPushButton {border:0px; background-color:0;}')
 
         self.iniciar = QPushButton('iniciar')
         self.iniciar.clicked.connect(self.start)
@@ -172,17 +178,19 @@ class options(QWidget):
         self.log.setStyleSheet("""
                                 QTextEdit {
                                     border: 0px;
-                                    background-color: #59595e;
+                                    background-color: qlineargradient(x1:0 y1:0, x2:1 y2:1, stop:0 #59595e, stop:1 #0b0b0d);
                                     border-radius: 5px;
                                 }
                                 """)
         self.log.setReadOnly(True)
-
+        
         
         self.form.addRow(self.iniciar, self.parar)
         self.form.addRow(self.save, self.extension)
         self.configV.addLayout(self.form)
-        self.configV.addWidget(self.log)
+        self.configV.addWidget(self.log, alignment=Qt.AlignRight)
+        self.configV.addWidget(self.delete_from_table, alignment=Qt.AlignRight)
+        
         gp1.setLayout(self.configV)
         
         return gp1
@@ -190,17 +198,32 @@ class options(QWidget):
     def cnn(self):
         gp1 = QGroupBox(self)
         gp1.setFixedSize(250,237)
+        self.vbox = QVBoxLayout()
+        
         return gp1
 
     def start(self):
         print(self.name)
-        data = requests.get("http://192.168.15.86/capture/on").json()['message']
-        self.log.append(data)
+        try:
+            pass
+        except:
+            pass
 
     def stop(self):
-        data = requests.get("http://192.168.15.86/capture/off").json()['message']
-        print(data)
-        print(type(data))
+        try:
+            pass
+        except:
+            pass
+
+    def delete_from_table_func(self):
+        mqttc = mqtt.Client('100')
+        mqttc.connect('mqtt.eclipse.org', 1883)
+        mqttc.publish('alter', self.name)
+        
+        self.close()
+        
+        
+        
 
 
 
