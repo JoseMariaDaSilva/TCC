@@ -33,9 +33,11 @@ class Plotting(FigureCanvas):
                                          )
 
     def plot(self, x, y, title=""):
+        
+        self.ax.set_ylim([-2, 2])
         self.ax.set_title(title)
-        self.ax.plot(x, y, alpha = 0.1)
-        self.ax.fill_between(x, y, alpha=0.5)
+        self.ax.plot(x, y)
+        #self.ax.fill_between(x, y, alpha=0.5)
         self.ax.tick_params(axis='x', colors='white')
         self.ax.tick_params(axis='y', colors='white')
         self.draw()

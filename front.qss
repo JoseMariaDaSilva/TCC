@@ -52,7 +52,6 @@ QPushButton{
     background-color:#524e4e;
     color:#e4ede4;
     padding: 1px;
-    border-style: solid;
     border: 1px solid #524e4e;
     border-radius: 7px;
 }
@@ -94,6 +93,7 @@ QPushButton#create {
     color:#e4ede4;
     border-radius: 5px;        
     border-width: 0px;
+    
 }
 QPushButton#create:hover:pressed
 {
@@ -118,19 +118,7 @@ QPushButton#search:hover:pressed
   background-color:#7f8a7f;
 }
 
-QMessageBox {
-    background-color: rgb(51, 51, 51);
-    
-}
 
-QMessageBox QLabel {
-    color: rgb(200, 200, 200);
-}
-
-QMessageBox::question {
-    background-color: rgb(51, 51, 51);
-    
-}
 
 QMessageBox QLabel {
     background-color:0;
@@ -174,6 +162,10 @@ QPushButton#mostrar {
 
 QPushButton#mostrar:hover:pressed {
   background-color:#0b0b0d;
+}
+
+QLabel {
+    background-color: 0;
 }
 
 /*==================================END BOTOES======================================*/

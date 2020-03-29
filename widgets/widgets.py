@@ -1,8 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QGroupBox, QVBoxLayout, QGridLayout, QLabel, QLineEdit, QHBoxLayout, QMessageBox
 from PyQt5.QtGui import QIntValidator
 from PyQt5.QtCore import Qt
-from .raspbbery_server import raspGp
-from .meansure1 import M1
 from .output import Output
 from .cut_graph import Cut
 from .run import Run

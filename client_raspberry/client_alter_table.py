@@ -20,8 +20,7 @@ class My_client_alter(Thread):
     def on_message(self, client, userdata, msg):
         print("[MSG RECEBIDA] Topico: "+msg.topic+" / Mensagem: "+str(msg.payload.decode('utf-8')))
         data = str(msg.payload.decode('utf-8'))
-        print(data)
-        print(type(data))
+        
         if delete_from_table('motor.db', data):
             print("Deletado com sucesso!")
         else:

@@ -53,56 +53,56 @@ class Run(QGroupBox):
         self.create = QPushButton("criar")
         self.create.clicked.connect(self.register)
         self.create.setObjectName("create")
+        self.create.setFixedWidth(100)
         
-        self.search = QPushButton("procurar")
-        self.search.setObjectName("search")
-
-        self.vbox.setSpacing(5)
+        self.vbox.setSpacing(10)
         
         self.vbox.addWidget(self.lbl, alignment=Qt.AlignCenter)
-        self.form.addRow("tag:", self.motor_label)
-        self.form.addRow("potencia (HP):", self.pot)
-        self.form.addRow("fp:", self.fp)
-        self.form.addRow("rotação:",self.rot)
-        self.form.addRow("rendimento:",self.rendimento)
-        self.form.addRow(self.create, self.search)
+        self.form.addRow("tag:          ", self.motor_label)
+        self.form.addRow("potencia (HP):          ", self.pot)
+        self.form.addRow("fp:          ", self.fp)
+        self.form.addRow("rotação:          ",self.rot)
+        self.form.addRow("rendimento:          ",self.rendimento)
         self.vbox.addLayout(self.form)
+        self.vbox.addWidget(self.create, alignment=Qt.AlignHCenter)
         self.vbox.addStretch()
         self.setLayout(self.vbox)
-        
+    
         
       
     
     def register(self, mark):
-        time_now = datetime.datetime.now().strftime("%d/%m/%y-%H:%M:%S")
-        self.data = {
-                        "tag":str(self.motor_label.text()),
-                        "potencia":int(self.pot.text()),
-                        "fp":float(self.fp.text()),
-                        "rotacao":int(self.rot.text()),
-                        "rendimento":float(self.rendimento.text()),
-                        "data":str(time_now),
-                        "ensaios":0
-                    }
-        
-        
         try:
+            time_now = datetime.datetime.now().strftime("%d/%m/%y-%H:%M:%S")
+            self.data = {
+                            "tag":str(self.motor_label.text()),
+                            "potencia":int(self.pot.text()),
+                            "fp":float(self.fp.text()),
+                            "rotacao":int(self.rot.text()),
+                            "rendimento":float(self.rendimento.text()),
+                            "data":str(time_now),
+                            "ensaios":0
+                        }
             
-            result = make_dir_a_tag(self.data['tag'])
+            try:
+                
+                result = make_dir_a_tag(self.data['tag'])
 
-            if result[1]:
-                mqttc = mqtt.Client('3')
-                mqttc.connect('mqtt.eclipse.org', 1883)
-                mqttc.publish('joelho1', str(self.data))
-            
+                if result[1]:
+                    mqttc = mqtt.Client('3')
+                    mqttc.connect('mqtt.eclipse.org', 1883)
+                    mqttc.publish('joelho1', str(self.data))
+                
 
+            except:
+                self.message.emit(result[0])
+
+            else:
+                self.message.emit(result[0])
+                
+                self.dataSignal.emit(True)
         except:
-            self.message.emit(result[0])
-
-        else:
-            self.message.emit(result[0])
-            
-            self.dataSignal.emit(True)
+            self.message.emit('Todos os campos obrigatórios!.')
         
         
      
